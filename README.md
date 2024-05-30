@@ -1,20 +1,12 @@
 # Instructions
 
-Select your desired min, max for the private key, and the wallets (public key)
+Siga instrucoes para installar o node no windows: https://www.youtube.com/watch?v=3bDtzMzaaCw
 
-Example:
 
-```
-const min = 0x2126875fd00000000
-const max = 0x3ffffffffffffffff
-
-const wallets = ['13zb1hQbWVsc2S7ZTZnP2G4undNNpdh5so']
-```
-
-Run:
+Rode:
 
 `$ npm install`
 
-And:
+E depois:
 
-`$ node btc.js`
+`$ node main.js`
