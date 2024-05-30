@@ -1,5 +1,6 @@
 import CoinKey from 'coinkey';
 import walletsArray from './wallets.js';
+import chalk from 'chalk'
 const walletsSet = new Set(walletsArray);
 
 function encontrarBitcoins(key, min, max){
@@ -35,7 +36,8 @@ function encontrarBitcoins(key, min, max){
             const tempo = (Date.now() - startTime)/1000
             console.log('Velocidade:', (Number(key) - Number(min))/ tempo, ' chaves por segundo')
             console.log('Tempo:', tempo, ' segundos');
-            console.log('Private key:', pkey)
+            console.log('Private key:', chalk.green(pkey))
+            console.log('WIF:', chalk.green(generateWIF(pkey)))
             throw 'ACHEI!!!! 🎉🎉🎉🎉🎉'
         }
         
@@ -48,5 +50,12 @@ function generatePublic(privateKey){
     _key.compressed = true
     return _key.publicAddress
 }
+
+function generateWIF(privateKey){
+    let _key = new CoinKey(new Buffer(privateKey, 'hex'))
+    return _key.privateWif
+}
+
+
 
 export default encontrarBitcoins;
