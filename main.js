@@ -25,7 +25,7 @@ rl.question(`Escolha uma carteira puzzle( ${chalk.cyan(1)} - ${chalk.cyan(160)})
     console.log('Numero possivel de chaves:',  chalk.yellow(parseInt(BigInt(max) - BigInt(min)).toLocaleString('pt-BR')))
     key = BigInt(min)
     
-    rl.question('Escolha uma opcao (1 - Comecar do inicio, 2 - Escolher uma porcentagem): ', (answer2) => {
+    rl.question(`Escolha uma opcao (${chalk.cyan(1)} - Comecar do inicio, ${chalk.cyan(2)} - Escolher uma porcentagem, ${chalk.cyan(3)} - Escolher minimo): `, (answer2) => {
         if (answer2 == '2'){
             rl.question('Escolha um numero entre 0 e 1: ', (answer3) => {
                 const range = BigInt(max) - BigInt(min);
@@ -36,7 +36,15 @@ rl.question(`Escolha uma carteira puzzle( ${chalk.cyan(1)} - ${chalk.cyan(160)})
                 encontrarBitcoins(key, min, max)
                 rl.close();
             });
+        } else if (answer2 == '3'){
+            rl.question('Entre o minimo: ', (answer3) => {
+                min = answer3
+                key = BigInt(min)
+                encontrarBitcoins(key, min, max)
+                rl.close();
+            });
         } else {
+            min = BigInt(min)
             encontrarBitcoins(key, min, max)
             rl.close();
         }
