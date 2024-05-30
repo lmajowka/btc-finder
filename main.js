@@ -44,7 +44,7 @@ rl.question(`Escolha uma carteira puzzle( ${chalk.cyan(1)} - ${chalk.cyan(160)})
             });
         } else if (answer2 == '3'){
             rl.question('Entre o minimo: ', (answer3) => {
-                min = answer3
+                min = BigInt(answer3)
                 key = BigInt(min)
                 encontrarBitcoins(key, min, max)
                 rl.close();
