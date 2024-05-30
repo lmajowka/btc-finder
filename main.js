@@ -28,6 +28,12 @@ rl.question(`Escolha uma carteira puzzle( ${chalk.cyan(1)} - ${chalk.cyan(160)})
     rl.question(`Escolha uma opcao (${chalk.cyan(1)} - Comecar do inicio, ${chalk.cyan(2)} - Escolher uma porcentagem, ${chalk.cyan(3)} - Escolher minimo): `, (answer2) => {
         if (answer2 == '2'){
             rl.question('Escolha um numero entre 0 e 1: ', (answer3) => {
+                if (parseFloat(answer3) > 1 || parseFloat(answer3) < 0) {
+                    console.log(chalk.bgRed('Erro: voce precisa escolher um numero entre 0 e 1'))
+                    throw 'Numero invalido'
+                }
+
+
                 const range = BigInt(max) - BigInt(min);
                 const percentualRange = range * BigInt(Math.floor(parseFloat(answer3) * 1e18)) / BigInt(1e18);
                 min = BigInt(min) + BigInt(percentualRange);
