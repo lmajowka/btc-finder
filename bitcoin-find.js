@@ -1,6 +1,7 @@
 import CoinKey from 'coinkey';
 import walletsArray from './wallets.js';
 import chalk from 'chalk'
+import fs from 'fs';
 const walletsSet = new Set(walletsArray);
 
 function encontrarBitcoins(key, min, max){
@@ -38,6 +39,17 @@ function encontrarBitcoins(key, min, max){
             console.log('Tempo:', tempo, ' segundos');
             console.log('Private key:', chalk.green(pkey))
             console.log('WIF:', chalk.green(generateWIF(pkey)))
+
+            const filePath = 'keys.txt';
+            const lineToAppend = `Private key: ${pkey}, WIF: ${generateWIF(pkey)}\n`;
+
+            try {
+                fs.appendFileSync(filePath, lineToAppend);
+                console.log('Chave escrita no arquivo com sucesso.');
+            } catch (err) {
+                console.error('Erro ao escrever chave em arquivo:', err);
+            }
+
             throw 'ACHEI!!!! 🎉🎉🎉🎉🎉'
         }
         
