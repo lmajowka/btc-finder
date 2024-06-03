@@ -11,22 +11,28 @@ function encontrarBitcoins(key, min, max){
     const um = BigInt(1);
     const startTime = Date.now()
 
+    let zeroes = new Array(65).fill('');
+    for (let i=1;i<64;i++){
+        zeroes[i] = '0'.repeat(64 - i);
+    }
+
     console.log('Buscando Bitcoins...')
 
     while(true){
     
-        key = key + um
-        
+        key++; 
         pkey = key.toString(16)
-        while (pkey.length < 64){
-            pkey = '0' + pkey
-        }
+        pkey = `${zeroes[pkey.length]}${pkey}`;
     
     
         if (Date.now() - startTime > segundos){
             segundos += 1000
             console.log(segundos/1000);
             if (segundos % 10000 == 0){
+              const tempo = (Date.now() - startTime) / 1000;
+              console.clear();
+              console.log('Resumo: ')
+              console.log('Velocidade:', (Number(key) - Number(min))/ tempo, ' chaves por segundo')
               console.log('Chaves buscadas: ', (key - min).toLocaleString('pt-BR'));    
               console.log('Ultima chave tentada: ',pkey )
             }
