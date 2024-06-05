@@ -4,7 +4,7 @@ import chalk from 'chalk'
 import fs from 'fs';
 const walletsSet = new Set(walletsArray);
 
-function encontrarBitcoins(key, min, max){
+async function encontrarBitcoins(key, min, max, shouldStop){
 
     let segundos = 0;
     let pkey = 0;
@@ -18,7 +18,8 @@ function encontrarBitcoins(key, min, max){
 
     console.log('Buscando Bitcoins...')
 
-    while(true){
+    const executeLoop = async () => {
+    while(!shouldStop()){
     
         key++; 
         pkey = key.toString(16)
@@ -40,7 +41,6 @@ function encontrarBitcoins(key, min, max){
               const content =`Ultima chave tentada: ${pkey}`
               try {
                 fs.writeFileSync(filePath, content, 'utf8');
-                console.log('File has been written successfully.');
               } catch (err) {
                 console.error('Error writing to file:', err);
               }
@@ -69,7 +69,9 @@ function encontrarBitcoins(key, min, max){
         }
         
     }
-
+    await new Promise(resolve => setImmediate(resolve));
+    }
+    await executeLoop();
 }
 
 function generatePublic(privateKey){

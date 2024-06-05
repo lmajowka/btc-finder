@@ -8,6 +8,8 @@ const rl = readline.createInterface({
     output: process.stdout
 });
 
+let shouldStop = false;
+
 
 
 let key = 0;
@@ -22,7 +24,7 @@ console.log("\x1b[38;2;250;128;114m" + "╔════════════�
             "║" + "\x1b[0m" + "\x1b[36m" + "  | |_) || || |___  |  _|  | || |\\  | |_| | |___|  _ <  " + "\x1b[0m" + "\x1b[38;2;250;128;114m" + "║\n" +
             "║" + "\x1b[0m" + "\x1b[36m" + "  |____/ |_| \\____| |_|   |___|_| \\_|____/|_____|_| \\_\\ " + "\x1b[0m" + "\x1b[38;2;250;128;114m" + "║\n" +
             "║" + "\x1b[0m" + "\x1b[36m" + "                                                        " + "\x1b[0m" + "\x1b[38;2;250;128;114m" + "║\n" +
-            "╚══════════════════════\x1b[32m" + "Investidor Internacional - v0.3" + "\x1b[0m\x1b[38;2;250;128;114m═══╝" + "\x1b[0m");
+            "╚══════════════════════\x1b[32m" + "Investidor Internacional - v0.4" + "\x1b[0m\x1b[38;2;250;128;114m═══╝" + "\x1b[0m");
 
 rl.question(`Escolha uma carteira puzzle( ${chalk.cyan(1)} - ${chalk.cyan(160)}): `, (answer) => {
     
@@ -50,35 +52,32 @@ rl.question(`Escolha uma carteira puzzle( ${chalk.cyan(1)} - ${chalk.cyan(160)})
                 min = BigInt(min) + BigInt(percentualRange);
                 console.log('Comecando em: ', chalk.yellow('0x'+min.toString(16)));
                 key = BigInt(min)
-                encontrarBitcoins(key, min, max)
+                encontrarBitcoins(key, min, max, () => shouldStop)
                 rl.close();
             });
         } else if (answer2 == '3'){
             rl.question('Entre o minimo: ', (answer3) => {
                 min = BigInt(answer3)
                 key = BigInt(min)
-                encontrarBitcoins(key, min, max)
+                encontrarBitcoins(key, min, max, () => shouldStop)
                 rl.close();
             });
         } else {
             min = BigInt(min)
-            encontrarBitcoins(key, min, max)
+            encontrarBitcoins(key, min, max, () => shouldStop)
             rl.close();
         }
     })
 });
 
 rl.on('SIGINT', () => {
-
+    shouldStop = true;
     rl.close();
     process.exit();
 });
 
-
-
-// Handle SIGINT (Ctrl+C)
 process.on('SIGINT', () => {
-    console.log(chalk.yellow('\nGracefully shutting down from SIGINT (Ctrl+C)'));
+    shouldStop = true;
     rl.close();
     process.exit();
 });
