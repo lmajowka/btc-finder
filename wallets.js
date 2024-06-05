@@ -158,7 +158,8 @@ const wallets = [
   "14JHoRAdmJg3XR4RjMDh6Wed6ft6hzbQe9",
   "19z6waranEf8CcP8FqNgdwUe1QRxvUNKBG",
   "14u4nA5sugaswb6SZgn5av2vuChdMnD9E5",
-  "1NBC8uXJy1GiJ6drkiZa1WuKn51ps7EPTv"
+  "1NBC8uXJy1GiJ6drkiZa1WuKn51ps7EPTv",
+  "18bHfcm8kGoAhBaQXzzVcG5534mdpWK981"
 ];
 
 
