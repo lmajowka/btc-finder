@@ -35,6 +35,15 @@ function encontrarBitcoins(key, min, max){
               console.log('Velocidade:', (Number(key) - Number(min))/ tempo, ' chaves por segundo')
               console.log('Chaves buscadas: ', (key - min).toLocaleString('pt-BR'));    
               console.log('Ultima chave tentada: ',pkey )
+
+              const filePath = 'Ultima_chave.txt';  // File path to write to
+              const content =`Ultima chave tentada: ${pkey}`
+              try {
+                fs.writeFileSync(filePath, content, 'utf8');
+                console.log('File has been written successfully.');
+              } catch (err) {
+                console.error('Error writing to file:', err);
+              }
             }
         }
     
