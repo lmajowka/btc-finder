@@ -105,7 +105,7 @@ const ranges = [
   { min:"0x80000000000000000000000000", max:"0xffffffffffffffffffffffffff" },
   { min:"0x100000000000000000000000000", max:"0x1ffffffffffffffffffffffffff" },
   { min:"0x200000000000000000000000000", max:"0x3ffffffffffffffffffffffffff" },
-  { min:"400000000000000000000000000", max:"0x7ffffffffffffffffffffffffff" },
+  { min:"0x400000000000000000000000000", max:"0x7ffffffffffffffffffffffffff" },
   { min:"0x800000000000000000000000000", max:"0xfffffffffffffffffffffffffff" },
   { min:"0x1000000000000000000000000000", max:"0x1fffffffffffffffffffffffffff" },
   { min:"0x2000000000000000000000000000", max:"0x3fffffffffffffffffffffffffff" },
