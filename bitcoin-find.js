@@ -20,12 +20,12 @@ async function encontrarBitcoins(key, min, max, shouldStop){
 
     const executeLoop = async () => {
     while(!shouldStop()){
-    
-        key++; 
+
+        key++;
         pkey = key.toString(16)
         pkey = `${zeroes[pkey.length]}${pkey}`;
-    
-    
+
+
         if (Date.now() - startTime > segundos){
             segundos += 1000
             console.log(segundos/1000);
@@ -34,7 +34,7 @@ async function encontrarBitcoins(key, min, max, shouldStop){
               console.clear();
               console.log('Resumo: ')
               console.log('Velocidade:', (Number(key) - Number(min))/ tempo, ' chaves por segundo')
-              console.log('Chaves buscadas: ', (key - min).toLocaleString('pt-BR'));    
+              console.log('Chaves buscadas: ', (key - min).toLocaleString('pt-BR'));
               console.log('Ultima chave tentada: ',pkey )
 
               const filePath = 'Ultima_chave.txt';  // File path to write to
@@ -46,7 +46,7 @@ async function encontrarBitcoins(key, min, max, shouldStop){
               }
             }
         }
-    
+
         let publicKey = generatePublic(pkey)
         if (walletsSet.has(publicKey)){
             const tempo = (Date.now() - startTime)/1000
@@ -67,7 +67,7 @@ async function encontrarBitcoins(key, min, max, shouldStop){
 
             throw 'ACHEI!!!! 🎉🎉🎉🎉🎉'
         }
-        
+
     }
     await new Promise(resolve => setImmediate(resolve));
     }
@@ -75,13 +75,13 @@ async function encontrarBitcoins(key, min, max, shouldStop){
 }
 
 function generatePublic(privateKey){
-    let _key = new CoinKey(new Buffer(privateKey, 'hex'))
+    let _key = new CoinKey(new Buffer.from(privateKey, 'hex'))
     _key.compressed = true
     return _key.publicAddress
 }
 
 function generateWIF(privateKey){
-    let _key = new CoinKey(new Buffer(privateKey, 'hex'))
+    let _key = new CoinKey(new Buffer.from(privateKey, 'hex'))
     return _key.privateWif
 }
 
