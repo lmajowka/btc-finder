@@ -142,7 +142,23 @@ const ranges = [
   { min:"0x100000000000000000000000000000000000", max:"0x1fffffffffffffffffffffffffffffffffff" },
   { min:"0x200000000000000000000000000000000000", max:"0x3fffffffffffffffffffffffffffffffffff" },
   { min:"0x400000000000000000000000000000000000", max:"0x7fffffffffffffffffffffffffffffffffff" },
-  { min:"0x800000000000000000000000000000000000", max:"0xffffffffffffffffffffffffffffffffffff" }
+  { min:"0x800000000000000000000000000000000000", max:"0xffffffffffffffffffffffffffffffffffff" },
+  { min: "0x1000000000000000000000000000000000000", max: "0x1ffffffffffffffffffffffffffffffffffff" },
+  { min: "0x2000000000000000000000000000000000000", max: "0x3ffffffffffffffffffffffffffffffffffff" },
+  { min: "0x4000000000000000000000000000000000000", max: "0x7ffffffffffffffffffffffffffffffffffff" },
+  { min: "0x8000000000000000000000000000000000000", max: "0xfffffffffffffffffffffffffffffffffffff" },
+  { min: "0x10000000000000000000000000000000000000", max: "0x1fffffffffffffffffffffffffffffffffffff" },
+  { min: "0x20000000000000000000000000000000000000", max: "0x3fffffffffffffffffffffffffffffffffffff" },
+  { min: "0x40000000000000000000000000000000000000", max: "0x7fffffffffffffffffffffffffffffffffffff" },
+  { min: "0x80000000000000000000000000000000000000", max: "0xffffffffffffffffffffffffffffffffffffff" },
+  { min: "0x100000000000000000000000000000000000000", max: "0x1ffffffffffffffffffffffffffffffffffffff" },
+  { min: "0x200000000000000000000000000000000000000", max: "0x3ffffffffffffffffffffffffffffffffffffff" },
+  { min: "0x400000000000000000000000000000000000000", max: "0x7ffffffffffffffffffffffffffffffffffffff" },
+  { min: "0x800000000000000000000000000000000000000", max: "0xfffffffffffffffffffffffffffffffffffffff" },
+  { min: "0x1000000000000000000000000000000000000000", max: "0x1fffffffffffffffffffffffffffffffffffffff" },
+  { min: "0x2000000000000000000000000000000000000000", max: "0x3fffffffffffffffffffffffffffffffffffffff" },
+  { min: "0x4000000000000000000000000000000000000000", max: "0x7fffffffffffffffffffffffffffffffffffffff" },
+  { min: "0x8000000000000000000000000000000000000000", max: "0xffffffffffffffffffffffffffffffffffffffff" }
 ];
 
 export default ranges;
