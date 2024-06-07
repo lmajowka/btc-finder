@@ -1,6 +1,6 @@
 # Instructions
 
-Siga instrucoes para installar o node no windows: https://www.youtube.com/watch?v=3bDtzMzaaCw
+Siga instrucoes para instalar o node no windows: https://www.youtube.com/watch?v=3bDtzMzaaCw
 
 
 Rode:
@@ -9,4 +9,4 @@ Rode:
 
 E depois:
 
-`$ node main.js`
+`$ npm start`
