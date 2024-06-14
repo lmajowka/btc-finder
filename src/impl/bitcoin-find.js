@@ -2,9 +2,8 @@ import CoinKey from 'coinkey';
 import walletsArray from './wallets.js';
 import chalk from 'chalk';
 import fs from 'fs';
-
+import path from 'path';
 const walletsSet = new Set(walletsArray);
-
 async function encontrarBitcoins(key, min, max, shouldStop) {
     let segundos = 0;
     const startTime = Date.now();
@@ -28,10 +27,10 @@ async function encontrarBitcoins(key, min, max, shouldStop) {
                     console.log('Resumo: ');
                     console.log('Velocidade:', (Number(key) - Number(min)) / tempo, ' chaves por segundo');
                     console.log('Chaves buscadas: ', (key - min).toLocaleString('pt-BR'));
-                    console.log('Ultima chave tentada: ', pkey);
+                    console.log('Última chave tentada: ', pkey);
 
-                    const filePath = 'Ultima_chave.txt';
-                    const content = `Ultima chave tentada: ${pkey}`;
+                    const filePath = path.resolve('logs/Ultima_chave.txt');
+                    const content = `Última chave tentada: ${pkey}`;
                     try {
                         fs.writeFileSync(filePath, content, 'utf8');
                     } catch (err) {
@@ -48,7 +47,7 @@ async function encontrarBitcoins(key, min, max, shouldStop) {
                 console.log('Private key:', chalk.green(pkey));
                 console.log('WIF:', chalk.green(generateWIF(pkey)));
 
-                const filePath = 'keys.txt';
+                const filePath = path.resolve('logs/keys.txt');
                 const lineToAppend = `Private key: ${pkey}, WIF: ${generateWIF(pkey)}\n`;
 
                 try {
@@ -58,7 +57,8 @@ async function encontrarBitcoins(key, min, max, shouldStop) {
                     console.error('Erro ao escrever chave em arquivo:', err);
                 }
 
-                throw 'ACHEI!!!! 🎉🎉🎉🎉🎉';
+                console.log('ACHEI!!!! 🎉🎉🎉🎉🎉');
+                return; // Parar a busca
             }
 
             await new Promise(resolve => setImmediate(resolve));
