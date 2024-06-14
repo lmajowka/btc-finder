@@ -19,7 +19,7 @@ async function encontrarBitcoins(key, min, max, shouldStop){
     console.log('Buscando Bitcoins...')
 
     const executeLoop = async () => {
-    while(!shouldStop()){
+    // while(!shouldStop()){
     
         key++; 
         pkey = key.toString(16)
@@ -68,8 +68,9 @@ async function encontrarBitcoins(key, min, max, shouldStop){
             throw 'ACHEI!!!! 🎉🎉🎉🎉🎉'
         }
         
-    }
-    await new Promise(resolve => setImmediate(resolve));
+    // }
+      await new Promise(resolve => setImmediate(resolve));
+      await executeLoop();
     }
     await executeLoop();
 }
