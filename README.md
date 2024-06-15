@@ -16,7 +16,7 @@
 Para rodar o projeto, execute os seguintes comandos no terminal:
  * Clone o repositório:
 
-  ```bash git clone git@github.com:lmajowka/btc-finder.git ```
+  ``` git clone git@github.com:lmajowka/btc-finder.git ```
  * Entre na pasta do projeto:
   ``` cd btc-finder ```
  * Instale as dependências:
