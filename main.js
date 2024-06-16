@@ -29,8 +29,8 @@ rl.question(`Escolha uma carteira puzzle( ${chalk.cyan(1)} - ${chalk.cyan(160)})
         return;
     }
 
-    let min = BigInt(ranges[answer - 1].min);
-    let max = BigInt(ranges[answer - 1].max);
+    let min = ranges[answer - 1].min;
+    let max = ranges[answer - 1].max;
     console.log('Carteira escolhida: ', chalk.cyan(answer), ' Min: ', chalk.yellow(min), ' Max: ', chalk.yellow(max));
     console.log('Número possível de chaves:', chalk.yellow(parseInt(max - min).toLocaleString('pt-BR')));
     let status = ranges[answer - 1].status === 1 ? chalk.red('Encontrada') : chalk.green('Não Encontrada');
