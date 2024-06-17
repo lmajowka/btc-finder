@@ -1,5 +1,5 @@
 import CoinKey from 'coinkey';
-import walletsArray from './wallets.js';
+import walletsArray from './data/wallets.js';
 import chalk from 'chalk';
 import fs from 'fs';
 

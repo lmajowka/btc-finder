@@ -6,7 +6,7 @@ async function validaEscolherPorcentagem() {
         const answer = await fazerPergunta("Escolha um numero entre 0 e 1: ")
         const num = parseFloat(answer);
 
-        if (num < 1 && num > 0) {
+        if (num >= 0 && num <= 1) {
             return num
 
         } else {

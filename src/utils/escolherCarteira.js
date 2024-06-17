@@ -1,17 +1,17 @@
 import chalk from 'chalk'
 import fazerPergunta from './fazerPergunta.js'
-import ranges from '../ranges.js'
+import ranges from '../data/ranges.js'
 
 async function validaEscolherCarteira(pergunta) {
     while (true) {
         const answer = await fazerPergunta(pergunta)
         const number = parseInt(answer)
 
-        if (number > 1 && number < 160) {
+        if (number > 0 && number < 162) {
             return answer
 
         } else {
-            console.log(chalk.bgRed('Erro: voce precisa escolher um numero entre 1 e 160'))
+            console.log(chalk.bgRed('Erro: voce precisa escolher um numero entre 1 e 161'))
         }
     }
 }
