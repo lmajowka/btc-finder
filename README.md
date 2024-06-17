@@ -1,12 +1,27 @@
-# Instructions
+# Instruções para rodar o projeto
 
-Siga instrucoes para instalar o node no windows: https://www.youtube.com/watch?v=3bDtzMzaaCw
+## Requisitos
+    * Node.js
+    * NPM
+## Links para instalação
+    * Node.js: https://nodejs.org/en/download/
+    * NPM: https://www.npmjs.com/get-npm
 
+## Video de instalação do Node.js no Windows
+   
+   <a href="https://www.youtube.com/watch?v=3bDtzMzaaCw" target="_blank">Instalação do Node.js no Windows</a>
 
-Rode:
+## Execução do projeto
 
-`$ npm install`
+Para rodar o projeto, execute os seguintes comandos no terminal:
+ * Clone o repositório:
 
-E depois:
+  ``` git clone git@github.com:lmajowka/btc-finder.git ```
+ * Entre na pasta do projeto:
+  ``` cd btc-finder ```
+ * Instale as dependências:
+ ``` npm install ```
 
-`$ npm start`
+ * Execute o projeto:
+ ``` npm start ```
+
