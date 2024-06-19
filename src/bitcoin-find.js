@@ -80,13 +80,13 @@ async function encontrarBitcoins(key, min, max) {
 }
 
 function generatePublic(privateKey) {
-    let _key = new CoinKey(Buffer.from(privateKey, 'hex'));
+    let _key = new CoinKey(Buffer(privateKey, 'hex'));
     _key.compressed = true;
     return _key.publicAddress;
 }
 
 function generateWIF(privateKey) {
-    let _key = new CoinKey(Buffer.from(privateKey, 'hex'));
+    let _key = new CoinKey(Buffer(privateKey, 'hex'));
     return _key.privateWif;
 }
 
