@@ -1,56 +1,38 @@
 import CoinKey from 'coinkey';
 import walletsArray from './data/wallets.js';
+import { parentPort } from 'worker_threads';
 import chalk from 'chalk';
 import fs from 'fs';
 
 const walletsSet = new Set(walletsArray);
 
-async function encontrarBitcoins(key, min, max) {
+async function encontrarBitcoins(min, max, worker) {
+    let key = BigInt(min);
+    let running = true;
     let segundos = 0;
     const startTime = Date.now();
-
     const zeroes = Array.from({ length: 65 }, (_, i) => '0'.repeat(64 - i));
 
-    console.log('Buscando Bitcoins...');
+    parentPort.on('message', (message) => {
+        if (message === 'STOP') {
+            running = false;
+        }
+    });
 
-    let running = true
     const executeLoop = async () => {
-        while (running) {
-            key++;
+        while (running && key <= max) {
             let pkey = key.toString(16);
             pkey = `${zeroes[pkey.length]}${pkey}`;
-
-            if (Date.now() - startTime > segundos) {
-                segundos += 1000;
-                console.log(segundos / 1000);
-                if (segundos % 10000 === 0) {
-                    const tempo = (Date.now() - startTime) / 1000;
-                    console.clear();
-                    console.log('Resumo: ');
-                    console.log('Velocidade:', (Number(key) - Number(min)) / tempo, ' chaves por segundo');
-                    console.log('Chaves buscadas: ', (key - min).toLocaleString('pt-BR'));
-                    console.log('Ultima chave tentada: ', pkey);
-
-                    const filePath = 'Ultima_chave.txt';
-                    const content = `Ultima chave tentada: ${pkey}`;
-                    try {
-                        fs.writeFileSync(filePath, content, 'utf8');
-                    } catch (err) {
-                        console.error('Erro ao escrever no arquivo:', err);
-                    }
-                }
-            }
 
             let publicKey = generatePublic(pkey);
             if (walletsSet.has(publicKey)) {
                 const tempo = (Date.now() - startTime) / 1000;
-                console.log('Velocidade:', (Number(key) - Number(min)) / tempo, ' chaves por segundo');
-                console.log('Tempo:', tempo, ' segundos');
+                const wif = generateWIF(pkey);
                 console.log('Private key:', chalk.green(pkey));
-                console.log('WIF:', chalk.green(generateWIF(pkey)));
+                console.log('WIF:', chalk.green(wif));
 
                 const filePath = 'keys.txt';
-                const lineToAppend = `Private key: ${pkey}, WIF: ${generateWIF(pkey)}\n`;
+                const lineToAppend = `Private key: ${pkey}, WIF: ${wif}\n`;
 
                 try {
                     fs.appendFileSync(filePath, lineToAppend);
@@ -59,10 +41,28 @@ async function encontrarBitcoins(key, min, max) {
                     console.error('Erro ao escrever chave em arquivo:', err);
                 }
 
-                console.log('ACHEI!!!! 🎉🎉🎉🎉🎉')
-                running = false
+                console.log('ACHEI!!!! 🎉🎉🎉🎉🎉');
+                parentPort.postMessage({ type: 'ACHEI', pkey, wif });
+                running = false;
+                break;
             }
 
+            if (Date.now() - startTime > segundos) {
+                segundos += 1000;
+                parentPort.postMessage({ type: 'PROGRESS', workerId: worker, key: key, lastKey: pkey });
+                
+                if (segundos % 10000 === 0) {
+                    const filePath = 'Ultima_chave.txt';
+                    const content = `Última chave tentada: ${pkey}`;
+                    try {
+                        fs.writeFileSync(filePath, content, 'utf8');
+                    } catch (err) {
+                        console.error('Erro ao escrever no arquivo:', err);
+                    }
+                }
+            }
+
+            key++;
             await new Promise(resolve => setImmediate(resolve));
         }
     };
@@ -70,23 +70,19 @@ async function encontrarBitcoins(key, min, max) {
     try {
         await executeLoop();
     } catch (err) {
-        if (err !== 'ACHEI!!!! 🎉🎉🎉🎉🎉') {
-            console.error('Erro inesperado:', err);
-            running = false
-        }
+        console.error('Erro inesperado:', err);
+        running = false;
     }
-
-    console.log('Processo interrompido ou concluído.');
 }
 
 function generatePublic(privateKey) {
-    let _key = new CoinKey(Buffer(privateKey, 'hex'));
+    let _key = new CoinKey(Buffer.from(privateKey, 'hex'));
     _key.compressed = true;
     return _key.publicAddress;
 }
 
 function generateWIF(privateKey) {
-    let _key = new CoinKey(Buffer(privateKey, 'hex'));
+    let _key = new CoinKey(Buffer.from(privateKey, 'hex'));
     return _key.privateWif;
 }
 
