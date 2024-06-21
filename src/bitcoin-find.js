@@ -1,5 +1,5 @@
-import CoinKey from 'coinkey';
 import walletsArray from './data/wallets.js';
+import { generatePublic, generateWIF } from './utils/index.js';
 import chalk from 'chalk';
 import fs from 'fs';
 
@@ -79,15 +79,6 @@ async function encontrarBitcoins(key, min, max) {
     console.log('Processo interrompido ou concluído.');
 }
 
-function generatePublic(privateKey) {
-    let _key = new CoinKey(Buffer(privateKey, 'hex'));
-    _key.compressed = true;
-    return _key.publicAddress;
-}
 
-function generateWIF(privateKey) {
-    let _key = new CoinKey(Buffer(privateKey, 'hex'));
-    return _key.privateWif;
-}
 
 export default encontrarBitcoins;

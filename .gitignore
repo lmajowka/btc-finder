@@ -1,4 +1,3 @@
 node_modules
-Ultima_chave.txt
-keys.txt
+*.txt
 package-lock.json
