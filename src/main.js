@@ -23,34 +23,40 @@ function titulo() {
 
 async function menu() {
     let [min, max, key] = await escolherCarteira(`Escolha uma carteira puzzle( ${chalk.cyan(1)} - ${chalk.cyan(161)}): `);
-    const answer = await fazerPergunta(`Escolha uma opcao (${chalk.cyan(1)} - Comecar do inicio, ${chalk.cyan(2)} - Escolher uma porcentagem, ${chalk.cyan(3)} - Escolher minimo, ${chalk.cyan(4)} - Dividir em blocos): `);
+    const answer = await fazerPergunta(`Escolha uma opcao (${chalk.cyan(1)} - Comecar do inicio, ${chalk.cyan(2)} - Escolher uma porcentagem, ${chalk.cyan(3)} - Escolher minimo, ${chalk.cyan(4)} - Dividir em blocos, ${chalk.cyan(5)} - Dividir em blocos (Randomico)): `);
 
     switch (answer) {
-        case '2':
+        case '1': 
+            key = BigInt(min);
+            rl.close();
+
+            encontrarBitcoins(key, min, max);
+            break;
+        case '2': 
             [min, max, key] = await escolherPorcentagem(min, max);
             rl.close();
 
             encontrarBitcoins(key, min, max);
             break;
-        case '3':
+        case '3': 
             [min, key] = await escolherMinimo(min);
             rl.close();
 
             encontrarBitcoins(key, min, max);
             break;
-        case '4':
+        case '4': 
             const numCPUs = os.cpus().length;
             const numBlocos = parseInt(await fazerPergunta(`Digite o número de blocos para dividir o intervalo (ou pressione Enter para usar ${numCPUs} blocos, com base no número de CPUs disponíveis): `)) || numCPUs;
             const blocos = await escolherPorcentagemBlocos(min, max, numBlocos);
             rl.close();
 
-            const control = { found: false };
+            const control = { found: false }; 
             let workers = [];
 
-           
+            
             const criarWorker = (bloco, blocoId) => {
                 return new Promise((resolve, reject) => {
-                    const worker = new Worker('./src/worker.js');
+                    const worker = new Worker('./src/worker.js'); 
                     worker.postMessage({ key: bloco.inicio, min: bloco.inicio, max: bloco.fim, blocoId, found: control.found });
 
                     worker.on('message', (message) => {
@@ -77,7 +83,7 @@ async function menu() {
                 });
             };
 
-            
+         
             const promises = blocos.map((bloco, index) => criarWorker(bloco, index + 1));
 
             try {
@@ -86,11 +92,57 @@ async function menu() {
                 return;
             }
             break;
-        default:
-            min = BigInt(min);
+        case '5': 
+            const numCPUsRandom = os.cpus().length; 
+            const numBlocosRandom = parseInt(await fazerPergunta(`Digite o número de blocos para dividir o intervalo (ou pressione Enter para usar ${numCPUsRandom} blocos, com base no número de CPUs disponíveis): `)) || numCPUsRandom;
+            const blocosRandom = await escolherPorcentagemBlocos(min, max, numBlocosRandom);
             rl.close();
 
-            encontrarBitcoins(key, min, max, { found: false });
+            const controlRandom = { found: false };
+            let workersRandom = [];
+
+         
+            const criarWorkerRandom = (bloco, blocoId) => {
+                return new Promise((resolve, reject) => {
+                    const worker = new Worker('./src/worker.js'); 
+                    worker.postMessage({ key: bloco.inicio, min: bloco.inicio, max: bloco.fim, blocoId, found: controlRandom.found, random: true });
+
+                    worker.on('message', (message) => {
+                        if (message.found) {
+                            controlRandom.found = true; 
+                            workersRandom.forEach(w => w.terminate());
+                            resolve();
+                        }
+                        if (message.completed) {
+                            console.log(`Bloco ${message.blocoId} completado sem encontrar chave.`);
+                            resolve();
+                        }
+                    });
+
+                    worker.on('error', reject);
+                    worker.on('exit', (code) => {
+                        if (code !== 0) {
+                            reject();
+                        }
+                        resolve();
+                    });
+
+                    workersRandom.push(worker);
+                });
+            };
+
+            
+            const promisesRandom = blocosRandom.map((bloco, index) => criarWorkerRandom(bloco, index + 1));
+
+            try {
+                await Promise.all(promisesRandom);
+            } catch (error) {
+                return;
+            }
+            break;
+        default:
+            console.log("Opção inválida. Por favor, escolha uma das opções disponíveis.");
+            rl.close();
             break;
     }
 }

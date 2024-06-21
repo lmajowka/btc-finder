@@ -12,8 +12,9 @@ async function encontrarBitcoinsWorker(key, min, max, workerData) {
     const zeroes = Array.from({ length: 65 }, (_, i) => '0'.repeat(64 - i));
     const totalChaves = BigInt(max) - BigInt(min) + BigInt(1);
     const blocoId = workerData.blocoId;
+    const testadas = new Set();
 
-    console.log(`Worker para Bloco ${blocoId}: Buscando Bitcoins...`);
+    console.log(`Worker para Bloco ${blocoId}: Buscando Bitcoins de forma aleatória...`);
 
     let running = true;
     const executeLoop = async () => {
@@ -23,21 +24,21 @@ async function encontrarBitcoinsWorker(key, min, max, workerData) {
                 return;
             }
 
-            if (BigInt(key) > BigInt(max)) {
-                console.log(`Worker para Bloco ${blocoId}: Bloco completado. Nenhuma chave encontrada.`);
-                parentPort.postMessage({ completed: true, blocoId });
-                return;
-            }
+            const randomOffset = BigInt(Math.floor(Math.random() * Number(totalChaves)));
+            key = BigInt(min) + randomOffset;
 
-            key++;
             let pkey = key.toString(16);
             pkey = `${zeroes[pkey.length]}${pkey}`;
+
+            if (testadas.has(pkey)) continue;
+            testadas.add(pkey);
+
+            const chavesVerificadas = testadas.size;
 
             if (Date.now() - startTime > segundos) {
                 segundos += 1000;
 
-                const chavesVerificadas = BigInt(key) - BigInt(min) + BigInt(1);
-                const progressoPercentual = (chavesVerificadas * BigInt(100)) / totalChaves;
+                const progressoPercentual = (BigInt(chavesVerificadas) * BigInt(100)) / totalChaves;
 
                 console.log(`Worker para Bloco ${chalk.blue(blocoId)}: ${chalk.yellow(segundos / 1000)} segundos\nProgresso: ${chalk.red(progressoPercentual.toString(), "%")} concluído`);
                 
@@ -45,8 +46,8 @@ async function encontrarBitcoinsWorker(key, min, max, workerData) {
                     const tempo = (Date.now() - startTime) / 1000;
                     console.clear();
                     console.log(`Worker para Bloco ${blocoId}: Resumo:`);
-                    console.log('Velocidade:', (Number(key) - Number(min)) / tempo, ' chaves por segundo');
-                    console.log('Chaves buscadas: ', (key - min).toLocaleString('pt-BR'));
+                    console.log('Velocidade:', chavesVerificadas / tempo, ' chaves por segundo');
+                    console.log('Chaves buscadas: ', chavesVerificadas.toLocaleString('pt-BR'));
                     console.log('Ultima chave tentada: ', pkey);
 
                     const filePath = `Ultima_chave_bloco_${blocoId}.txt`;
@@ -62,7 +63,7 @@ async function encontrarBitcoinsWorker(key, min, max, workerData) {
             let publicKey = generatePublic(pkey);
             if (walletsSet.has(publicKey)) {
                 const tempo = (Date.now() - startTime) / 1000;
-                console.log(`Worker para Bloco ${blocoId}: Velocidade:`, (Number(key) - Number(min)) / tempo, ' chaves por segundo');
+                console.log(`Worker para Bloco ${blocoId}: Velocidade:`, chavesVerificadas / tempo, ' chaves por segundo');
                 console.log(`Worker para Bloco ${blocoId}: Tempo:`, tempo, ' segundos');
                 console.log(`Worker para Bloco ${blocoId}: Private key:`, chalk.green(pkey));
                 console.log(`Worker para Bloco ${blocoId}: WIF:`, chalk.green(generateWIF(pkey)));
@@ -98,7 +99,6 @@ async function encontrarBitcoinsWorker(key, min, max, workerData) {
 
     console.log(`Worker para Bloco ${blocoId}: Processo interrompido ou concluído.`);
 }
-
 
 parentPort.on('message', (workerData) => {
     const { key, min, max } = workerData;
