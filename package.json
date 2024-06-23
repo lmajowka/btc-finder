@@ -11,6 +11,16 @@
   "license": "ISC",
   "dependencies": {
     "chalk": "^5.3.0",
-    "coinkey": "^3.0.0"
+    "coinkey": "^3.0.0",
+    "axios": "^1.7.2",
+    "coinkey": "^3.0.0",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "express-basic-auth": "^1.2.1",
+    "node-fetch": "^3.3.2",
+    "nodemon": "^3.1.4",
+    "postcss": "^8.4.38",
+    "socket.io": "^4.7.5",
+    "tailwindcss": "^3.4.4"
   }
 }

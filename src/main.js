@@ -9,6 +9,7 @@ import {
     escolherPorcentagemBlocos
 } from './utils/index.js';
 import encontrarBitcoins from './bitcoin-find.js';
+import { iniciarServidor } from '../web-interface/app.js';
 
 function titulo() {
     console.log("\x1b[38;2;250;128;114m" + "╔════════════════════════════════════════════════════════╗\n" +
@@ -147,9 +148,10 @@ async function menu() {
     }
 }
 
-function main() {
+async function main() {
     console.clear();
     titulo();
+    await iniciarServidor(rl);
     menu();
 }
 
