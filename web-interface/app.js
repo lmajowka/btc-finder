@@ -23,12 +23,12 @@ const port = 3000;
 let authMiddleware;
 
 const perguntarParaIniciarInterface = (rl) => {
-  //As credencias de usuário e senha servem para conseguir acessar as chaves privadas e evitar que qualquer pessoa da rede seja capaz de ter acesso as chaves.
   return new Promise((resolve, reject) => {
-
+    
     rl.question('[beta] Deseja iniciar a interface web? (s/n) [n]: ', (resposta) => {
       const respostaNormalizada = resposta.trim().toLowerCase();
       if (respostaNormalizada === 's' || respostaNormalizada === 'sim') {
+        //As credencias de usuário e senha servem para conseguir acessar as chaves privadas e evitar que qualquer pessoa da rede seja capaz de ter acesso as chaves.
         rl.question('Crie um nome de usuário: ', (username) => {
           rl.question('Crie uma senha: ', (password) => {
             authMiddleware = basicAuth({
@@ -206,7 +206,7 @@ const monitorarKeys = () => {
 
 const listenAsync = promisify(server.listen).bind(server);
 
-export const iniciarServidor = async (rl) => {
+export const iniciarInterfaceWeb = async (rl) => {
   const iniciarInterface = await perguntarParaIniciarInterface(rl);
   if (iniciarInterface) {
     monitorarKeys();
