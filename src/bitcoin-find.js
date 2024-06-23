@@ -28,7 +28,7 @@ async function encontrarBitcoins(key, min, max) {
                     console.clear();
                     console.log('Resumo: ');
                     console.log('Velocidade:', (Number(key) - Number(min)) / tempo, ' chaves por segundo');
-                    console.log('Chaves buscadas: ', (key - min).toLocaleString('pt-BR'));
+                    console.log('Chaves buscadas: ', (Number(key) - Number(min)).toLocaleString('pt-BR'));
                     console.log('Ultima chave tentada: ', pkey);
 
                     const filePath = 'Ultima_chave.txt';
