@@ -13,6 +13,9 @@ async function encontrarBitcoinsWorker(key, min, max, workerData) {
     const totalChaves = BigInt(max) - BigInt(min) + BigInt(1);
     const blocoId = workerData.blocoId;
     const testadas = new Set();
+    let chavesVerificadas = 0;
+    //foi adicionado um limite de chaves para evitar lotar a memória
+    const maxTestadasSize = 1_000_000;
 
     console.log(`Worker para Bloco ${blocoId}: Buscando Bitcoins de forma aleatória...`);
 
@@ -32,8 +35,16 @@ async function encontrarBitcoinsWorker(key, min, max, workerData) {
 
             if (testadas.has(pkey)) continue;
             testadas.add(pkey);
+            chavesVerificadas++;
 
-            const chavesVerificadas = testadas.size;
+            if (testadas.size > maxTestadasSize) {
+                // Remove 50% das chaves mais antigas para não lotar a memória
+                const keysArray = Array.from(testadas);
+                const halfSize = Math.floor(keysArray.length / 2);
+                for (let i = 0; i < halfSize; i++) {
+                    testadas.delete(keysArray[i]);
+                }
+            }
 
             if (Date.now() - startTime > segundos) {
                 segundos += 1000;
